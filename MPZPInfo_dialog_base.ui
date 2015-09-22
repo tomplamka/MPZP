@@ -212,14 +212,27 @@
   <widget class="QPushButton" name="btnGenerujPDF">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>50</x>
      <y>550</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Generuj PDF</string>
+    <string>Wyrys</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnZaswiadczeniePDF">
+   <property name="geometry">
+    <rect>
+     <x>284</x>
+     <y>550</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Zaświadczenie</string>
    </property>
   </widget>
  </widget>

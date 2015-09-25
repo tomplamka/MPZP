@@ -277,7 +277,7 @@ class mpzp:
         
         myAtlas.prepareForFeature( self.idAtlas )
         saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\atlas\pdf'
-        output_pdf = "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
+        output_pdf = saveDir + "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
         myComposition.exportAsPDF(output_pdf)
         myAtlas.endRender()
         
@@ -304,7 +304,7 @@ class mpzp:
         myAtlasMap = myComposition.getComposerMapById(0)
         
         # Konfiguracja Atlas
-        myAtlas = myComposition.atlasComposition()#ustawia warstwÄ w atlasie
+        myAtlas = myComposition.atlasComposition()#ustawia warstwę w atlasie
         
         myAtlas.setEnabled(True)
         myAtlas.setCoverageLayer(alayer)
@@ -320,9 +320,54 @@ class mpzp:
             # generuj atlas
         myAtlas.beginRender()
         
-        myAtlas.prepareForFeature( self.idAtlas )
+        myAtlas.prepareForFeature(self.idAtlas)
         saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie\pdf'
-        output_pdf = "zaswiadczenie_dz_" + str(self.idAtlas)+ "_Zas.pdf"
+        output_pdf = saveDir + "zaswiadczenie_dz_" + str(self.idAtlas)+ "_Zas.pdf"
+        myComposition.exportAsPDF(output_pdf)
+        myAtlas.endRender()
+        
+    def printWypisPDF(self):
+        alayer = self.iface.activeLayer()
+        # Dodaje wszystkie warstwy do widoku mapy
+        myMapRenderer = self.iface.mapCanvas().mapRenderer()
+
+        # ładuje szablon druku
+        myComposition = QgsComposition(myMapRenderer)
+        template = 'wypis.qpt'
+
+        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wypis.qpt'
+        myTemplateFile = file(myFile, 'rt')
+        myTemplateContent = myTemplateFile.read()
+        myTemplateFile.close()
+
+
+        myDocument = QDomDocument()
+        myDocument.setContent(myTemplateContent)
+        myComposition.loadFromTemplate(myDocument)
+
+        # pobierz kompozycję mapy i zdefinuj skalę
+        myAtlasMap = myComposition.getComposerMapById(0)
+        
+        # Konfiguracja Atlas
+        myAtlas = myComposition.atlasComposition()#ustawia warstwę w atlasie
+        
+        myAtlas.setEnabled(True)
+        myAtlas.setCoverageLayer(alayer)
+        myAtlas.setHideCoverage(False)
+        myAtlas.setSingleFile(True)
+        myAtlas.setHideCoverage(False)
+        
+        myAtlasMap.setAtlasDriven(True)#mapa kontrolowana przez atlas
+        myAtlasMap.setAtlasScalingMode(QgsComposerMap.Auto)# jaka skala kontrolowana przez atlas (margin)
+        myComposition.setAtlasMode(QgsComposition.ExportAtlas)#Ustawia Atlas na Eksport do PDF
+
+        myComposition.refreshItems()   
+            # generuj atlas
+        myAtlas.beginRender()
+        
+        myAtlas.prepareForFeature(self.idAtlas)
+        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wypis\pdf'
+        output_pdf = saveDir + "wypis_dz_" + str(self.idAtlas)+ "_Wypis.pdf"
         myComposition.exportAsPDF(output_pdf)
         myAtlas.endRender()
         
@@ -373,6 +418,7 @@ class mpzp:
         
         self.dlg.btnGenerujPDF.clicked.connect(self.printPDF)
         self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
+        self.dlg.btnWypisPDF.clicked.connect(self.printWypisPDF)
         self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)
         self.dlg.btnSzukaj.clicked.connect(self.szukaj)
         
@@ -380,6 +426,8 @@ class mpzp:
         self.dlg.dzialkaComboBox.clear()
         self.dlg.arkuszComboBox.clear()
         
+        #lyr = "dzialki_gm_knurow_Rejestr MPZP"
+        #self.iface.setActiveLayer(lyr)
         warstwa = self.iface.activeLayer()
         
         #filtr Obręby

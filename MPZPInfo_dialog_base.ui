@@ -209,31 +209,38 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="btnGenerujPDF">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>100</x>
      <y>550</y>
-     <width>75</width>
-     <height>23</height>
+     <width>241</width>
+     <height>25</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Wyrys</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnZaswiadczeniePDF">
-   <property name="geometry">
-    <rect>
-     <x>284</x>
-     <y>550</y>
-     <width>81</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Zaświadczenie</string>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="btnWypisPDF">
+      <property name="text">
+       <string>Wypis</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btnGenerujPDF">
+      <property name="text">
+       <string>Wyrys</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btnZaswiadczeniePDF">
+      <property name="text">
+       <string>Zaświadczenie</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

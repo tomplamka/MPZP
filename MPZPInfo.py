@@ -71,6 +71,9 @@ class mpzp:
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'mpzp')
         self.toolbar.setObjectName(u'mpzp')
+        
+        #tabelka
+        #self.dzemodel = QSqlQueryModel(self.dlg)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -222,8 +225,8 @@ class mpzp:
         
         #wartości z coboBoxów do zmiennej
         varObreb_2 = self.dlg.obrebComboBox_2.currentText()
-        varOdDate = self.dlg.odDateEdit.date().toString("dd.mm.yyyy")
-        varDoDate = self.dlg.doDateEdit.date().toString("dd.mm.yyyy")
+        varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
+        varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
         
         #request = QgsFeatureRequest().setFilterExpression( "\"OBREB\"='" + varObreb + "' OR \"NUMER\"='"+ varNumer + "'  OR \"ARKUSZ\"='"+ varArkusz + "'" )
         expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
@@ -278,8 +281,12 @@ class mpzp:
         myAtlas.prepareForFeature( self.idAtlas )
         saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\atlas\pdf'
         output_pdf = saveDir + "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
-        myComposition.exportAsPDF(output_pdf)
-        myAtlas.endRender()
+        try:
+            myComposition.exportAsPDF(output_pdf)
+            myAtlas.endRender()
+            self.iface.messageBar().pushMessage('Sukces', u'Wyrys został wygenerowany pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
+        except:
+            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Wyrysu nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
         
     def printZaswiadczeniePDF(self):
         alayer = self.iface.activeLayer()
@@ -323,8 +330,12 @@ class mpzp:
         myAtlas.prepareForFeature(self.idAtlas)
         saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie\pdf'
         output_pdf = saveDir + "zaswiadczenie_dz_" + str(self.idAtlas)+ "_Zas.pdf"
-        myComposition.exportAsPDF(output_pdf)
-        myAtlas.endRender()
+        try:
+            myComposition.exportAsPDF(output_pdf)
+            myAtlas.endRender()
+            self.iface.messageBar().pushMessage('Sukces', u'Zaświadczenie zostało wygenerowane pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
+        except:
+            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Zaświadczenia nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
         
     def printWypisPDF(self):
         alayer = self.iface.activeLayer()
@@ -368,48 +379,12 @@ class mpzp:
         myAtlas.prepareForFeature(self.idAtlas)
         saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wypis\pdf'
         output_pdf = saveDir + "wypis_dz_" + str(self.idAtlas)+ "_Wypis.pdf"
-        myComposition.exportAsPDF(output_pdf)
-        myAtlas.endRender()
-        
-    def printPD2(self):
-        # parametry
-        template_path = r'C:\Users\haku\Desktop\Opole\Knurow\druk\template1.qpt'
-        mainPath = r'C:/Users/haku/.qgis2/python/plugins/rejestrDok/wydruki/'
-        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.pdf')
-        imageType = "pdf"
-        canvas = QgsMapCanvas()
-        # Load our project
-        #QgsProject.instance().read(QFileInfo(project_path))
-        #bridge = QgsLayerTreeMapCanvasBridge(
-        #    QgsProject.instance().layerTreeRoot(), canvas)
-        #bridge.setCanvasLayers()
-
-        template_file = file(template_path)
-        template_content = template_file.read()
-        template_file.close()
-        document = QDomDocument()
-        document.setContent(template_content)
-        composition = QgsComposition(canvas.mapSettings())
-        # You can use this to replace any string like this [key]
-        # in the template with a new value. e.g. to replace
-        # [date] pass a map like this {'date': '1 Jan 2012'}
-        substitution_map = {
-            'DATE_TIME_START': 'foo',
-            'DATE_TIME_END': 'bar'}
-        composition.loadFromTemplate(document, substitution_map)
-        # You must set the id in the template
-        map_item = composition.getComposerItemById('map')
-        #map_item.setMapCanvas(canvas)
-        #map_item.zoomToExtent(canvas.extent())
-        # Trzeba ustawić id w szablonie
-        #legend_item = composition.getComposerItemById('legend')
-        #legend_item.updateLegend()
-        composition.refreshItems()
-        composition.exportAsPDF(filename)
-
-        #image.save(filename, imageType)
-        self.iface.messageBar().pushMessage(u'Sukces', u'Obraz został zapisany', level=QgsMessageBar.SUCCESS, duration=5)
-
+        try:
+            myComposition.exportAsPDF(output_pdf)
+            myAtlas.endRender()
+            self.iface.messageBar().pushMessage('Sukces', u'Wypis został wygenerowany pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
+        except:
+            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Wypisu nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
 
     def run(self):
         """Run method that performs all the real work"""
@@ -425,6 +400,11 @@ class mpzp:
         self.dlg.obrebComboBox.clear()
         self.dlg.dzialkaComboBox.clear()
         self.dlg.arkuszComboBox.clear()
+        
+        #tabelka
+        #self.dlg.ui.tableView.setModel(self.dzemodel)
+        #self.dlg.ui.tableView.setColumnHidden(0,True)
+        #self.dlg.ui.tableView.show()
         
         #lyr = "dzialki_gm_knurow_Rejestr MPZP"
         #self.iface.setActiveLayer(lyr)

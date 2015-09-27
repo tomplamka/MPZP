@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>391</width>
-     <height>521</height>
+     <height>581</height>
     </rect>
    </property>
    <property name="title">
@@ -31,7 +31,7 @@
       <x>10</x>
       <y>20</y>
       <width>371</width>
-      <height>491</height>
+      <height>551</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -105,31 +105,47 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../../../../.designer/backup/icon/search.png</normaloff>../../../../.designer/backup/icon/search.png</iconset>
+        <normaloff>../../../../../../.designer/backup/icon/search.png</normaloff>../../../../../../.designer/backup/icon/search.png</iconset>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnLokalizuj">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>110</y>
-        <width>111</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Lokalizuj na mapie</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../../../.designer/backup/icon/select.png</normaloff>../../../../.designer/backup/icon/select.png</iconset>
-      </property>
-     </widget>
-     <widget class="QTableView" name="tableView">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>160</y>
+        <y>180</y>
+        <width>241</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="btnWypisPDF">
+         <property name="text">
+          <string>Wypis</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnGenerujPDF">
+         <property name="text">
+          <string>Wyrys</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnZaswiadczeniePDF">
+         <property name="text">
+          <string>Zaświadczenie</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>220</y>
         <width>341</width>
         <height>291</height>
        </rect>
@@ -208,39 +224,6 @@
      </widget>
     </widget>
    </widget>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>550</y>
-     <width>241</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QPushButton" name="btnWypisPDF">
-      <property name="text">
-       <string>Wypis</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="btnGenerujPDF">
-      <property name="text">
-       <string>Wyrys</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="btnZaswiadczeniePDF">
-      <property name="text">
-       <string>Zaświadczenie</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
  </widget>
  <resources/>

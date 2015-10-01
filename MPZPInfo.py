@@ -72,6 +72,9 @@ class mpzp:
         self.toolbar = self.iface.addToolBar(u'mpzp')
         self.toolbar.setObjectName(u'mpzp')
         
+            #else:
+            #    self.iface.messageBar().pushMessage(u'Uwaga', u'Brak warstwy działek', level=QgsMessageBar.WARNING, duration=10)
+        
         #tabelka
         #self.dzemodel = QSqlQueryModel(self.dlg)
 
@@ -192,9 +195,12 @@ class mpzp:
     def __enableTool(self, active):
         self.tool.setEnabled(active)
 
+
     def __onToolSet(self, tool):
         if tool != self.tool:
             self.toolButton.setChecked(False)
+    
+
         
     def szukaj(self):
         # selekcja atrybutów na podstawie zaznaczonych wartości
@@ -213,15 +219,26 @@ class mpzp:
         warstwa.setSelectedFeatures( ids )
         self.idAtlas = int(ids[0])
         
+        
+        for feature in warstwa.selectedFeatures():
+            uchwala = feature.attributes()
+            
+        self.nrUchwaly = uchwala[5]
+        self.nrUchwalyReplace = self.nrUchwaly.replace("/", "_")
+        
+        #self.iface.messageBar().pushMessage('Sukces', self.nrUchwalyReplace, level=QgsMessageBar.SUCCESS, duration=5)
+        
         #zoom do wybranej działki
         box = warstwa.boundingBoxOfSelected()
         self.iface.mapCanvas().setExtent(box)
         self.iface.mapCanvas().refresh()
         
+
+        
     def szukajDate(self):
         # selekcja atrybutów na podstawie zaznaczonych wartości
         self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
-        warstwa = self.iface.mapCanvas().currentLayer()
+        self.warstwa = self.iface.mapCanvas().currentLayer()
         
         #wartości z coboBoxów do zmiennej
         varObreb_2 = self.dlg.obrebComboBox_2.currentText()
@@ -230,16 +247,18 @@ class mpzp:
         
         #request = QgsFeatureRequest().setFilterExpression( "\"OBREB\"='" + varObreb + "' OR \"NUMER\"='"+ varNumer + "'  OR \"ARKUSZ\"='"+ varArkusz + "'" )
         expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
-        it = warstwa.getFeatures( QgsFeatureRequest( expr ) )
+        it = self.warstwa.getFeatures( QgsFeatureRequest( expr ) )
         ids = [i.id() for i in it]
-        warstwa.setSelectedFeatures( ids )
+        self.warstwa.setSelectedFeatures( ids )
+
         
         #zoom do wybranej działki
-        box = warstwa.boundingBoxOfSelected()
+        box = self.warstwa.boundingBoxOfSelected()
         self.iface.mapCanvas().setExtent(box)
         self.iface.mapCanvas().refresh()
         
-    def printPDF(self):
+        
+    def printWyrysPDF(self):
         alayer = self.iface.activeLayer()
         # Dodaje wszystkie warstwy do widoku mapy
         myMapRenderer = self.iface.mapCanvas().mapRenderer()
@@ -344,9 +363,10 @@ class mpzp:
 
         # ładuje szablon druku
         myComposition = QgsComposition(myMapRenderer)
-        template = 'wypis.qpt'
-
-        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wypis.qpt'
+        template = self.nrUchwalyReplace
+        templateSuffix = '.qpt'
+        templateDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\pliki\szablony druku\jedno\wypis'
+        myFile = os.path.join(templateDir, template + templateSuffix)
         myTemplateFile = file(myFile, 'rt')
         myTemplateContent = myTemplateFile.read()
         myTemplateFile.close()
@@ -377,7 +397,7 @@ class mpzp:
         myAtlas.beginRender()
         
         myAtlas.prepareForFeature(self.idAtlas)
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wypis\pdf'
+        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\wydruki\wypisy\pdf'
         output_pdf = saveDir + "wypis_dz_" + str(self.idAtlas)+ "_Wypis.pdf"
         try:
             myComposition.exportAsPDF(output_pdf)
@@ -391,7 +411,13 @@ class mpzp:
         # show the dialog
         self.dlg.show()
         
-        self.dlg.btnGenerujPDF.clicked.connect(self.printPDF)
+        activeLyr=None
+        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+            if lyr.name() == "dzialki_gm_knurow_Rejestr_MPZP":
+                activeLyr = lyr
+                self.iface.setActiveLayer(activeLyr)
+        
+        self.dlg.btnGenerujPDF.clicked.connect(self.printWyrysPDF)
         self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
         self.dlg.btnWypisPDF.clicked.connect(self.printWypisPDF)
         self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)

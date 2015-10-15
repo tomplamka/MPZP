@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- mpzp
+ Dzialki
                                  A QGIS plugin
- MPZPInfo
+ Dzialki
                              -------------------
-        begin                : 2015-09-13
+        begin                : 2015-10-15
         copyright            : (C) 2015 by Tomasz Hak
         email                : tomplamka@gmail.com
         git sha              : $Format:%H$
@@ -25,11 +25,11 @@
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
-    """Load mpzp class from file mpzp.
+    """Load Dzialki class from file Dzialki.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
     #
-    from .MPZPInfo import mpzp
-    return mpzp(iface)
+    from .Dzialki import Dzialki
+    return Dzialki(iface)

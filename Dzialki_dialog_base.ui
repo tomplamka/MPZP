@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>mpzpDialogBase</class>
- <widget class="QDialog" name="mpzpDialogBase">
+ <class>DzialkiDialogBase</class>
+ <widget class="QDialog" name="DzialkiDialogBase">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>179</height>
+    <width>410</width>
+    <height>178</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MPZPInfo</string>
+   <string>Dzialki</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -95,9 +95,6 @@
       <normaloff>../../../../../../.designer/backup/icon/search.png</normaloff>../../../../../../.designer/backup/icon/search.png</iconset>
     </property>
    </widget>
-   <zorder>formLayoutWidget_2</zorder>
-   <zorder>formLayoutWidget</zorder>
-   <zorder>btnSzukaj</zorder>
   </widget>
  </widget>
  <resources/>

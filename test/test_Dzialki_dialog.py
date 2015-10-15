@@ -9,25 +9,25 @@
 """
 
 __author__ = 'tomplamka@gmail.com'
-__date__ = '2015-09-13'
+__date__ = '2015-10-15'
 __copyright__ = 'Copyright 2015, Tomasz Hak'
 
 import unittest
 
 from PyQt4.QtGui import QDialogButtonBox, QDialog
 
-from MPZPInfo_dialog import mpzpDialog
+from Dzialki_dialog import DzialkiDialog
 
 from utilities import get_qgis_app
 QGIS_APP = get_qgis_app()
 
 
-class mpzpDialogTest(unittest.TestCase):
+class DzialkiDialogTest(unittest.TestCase):
     """Test dialog works."""
 
     def setUp(self):
         """Runs before each test."""
-        self.dialog = mpzpDialog(None)
+        self.dialog = DzialkiDialog(None)
 
     def tearDown(self):
         """Runs after each test."""
@@ -49,7 +49,7 @@ class mpzpDialogTest(unittest.TestCase):
         self.assertEqual(result, QDialog.Rejected)
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(mpzpDialogTest)
+    suite = unittest.makeSuite(DzialkiDialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 

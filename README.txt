@@ -1,7 +1,7 @@
 Plugin Builder Results
 
-Your plugin mpzp was created in:
-    C:\Users\haku\.qgis2\python\plugins\mpzp
+Your plugin Dzialki was created in:
+    C:\Users\haku\.qgis2\python\plugins\Dzialki
 
 Your QGIS plugin directory is located at:
     C:/Users/haku/.qgis2/python/plugins
@@ -17,11 +17,11 @@ What's Next:
 
   * Test the plugin by enabling it in the QGIS plugin manager
 
-  * Customize it by editing the implementation file: ``MPZPInfo.py``
+  * Customize it by editing the implementation file: ``Dzialki.py``
 
   * Create your own custom icon, replacing the default icon.png
 
-  * Modify your user interface by opening mpzp.ui in Qt Designer
+  * Modify your user interface by opening Dzialki.ui in Qt Designer
 
   * You can use the Makefile to compile your Ui and resource files when
     you make changes. This requires GNU make (gmake)

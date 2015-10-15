@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- mpzp
+ Dzialki
                                  A QGIS plugin
- MPZPInfo
+ Dzialki
                               -------------------
-        begin                : 2015-09-13
+        begin                : 2015-10-15
         git sha              : $Format:%H$
         copyright            : (C) 2015 by Tomasz Hak
         email                : tomplamka@gmail.com
@@ -29,11 +29,11 @@ from PyQt4.QtXml import QDomDocument
 # Initialize Qt resources from file resources.py
 import resources
 # Import the code for the dialog
-from MPZPInfo_dialog import mpzpDialog
+from Dzialki_dialog import DzialkiDialog
 import os.path
 
 
-class mpzp:
+class Dzialki:
     """QGIS Plugin Implementation."""
 
     def __init__(self, iface):
@@ -53,7 +53,7 @@ class mpzp:
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',
-            'mpzp_{}.qm'.format(locale))
+            'Dzialki_{}.qm'.format(locale))
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -63,20 +63,14 @@ class mpzp:
                 QCoreApplication.installTranslator(self.translator)
 
         # Create the dialog (after translation) and keep reference
-        self.dlg = mpzpDialog()
+        self.dlg = DzialkiDialog()
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&MPZPInfo')
+        self.menu = self.tr(u'&Dzialki')
         # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'mpzp')
-        self.toolbar.setObjectName(u'mpzp')
-        
-            #else:
-            #    self.iface.messageBar().pushMessage(u'Uwaga', u'Brak warstwy dzia艂ek', level=QgsMessageBar.WARNING, duration=10)
-        
-        #tabelka
-        #self.dzemodel = QSqlQueryModel(self.dlg)
+        self.toolbar = self.iface.addToolBar(u'Dzialki')
+        self.toolbar.setObjectName(u'Dzialki')
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -91,7 +85,7 @@ class mpzp:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('mpzp', message)
+        return QCoreApplication.translate('Dzialki', message)
 
 
     def add_action(
@@ -170,44 +164,30 @@ class mpzp:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/mpzp/icon/search.png'
+        icon_path = ':/plugins/Dzialki/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'MPZPInfo'),
+            text=self.tr(u'Dzialki'),
             callback=self.run,
             parent=self.iface.mainWindow())
-            
-        #self.toolButton.toggled.connect(self.__enableTool)
-        #self.iface.mapCanvas().mapToolSet.connect(self.__onToolSet)
 
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&MPZPInfo'),
+                self.tr(u'&Dzialki'),
                 action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
         del self.toolbar
         
-        
-    def __enableTool(self, active):
-        self.tool.setEnabled(active)
-
-
-    def __onToolSet(self, tool):
-        if tool != self.tool:
-            self.toolButton.setChecked(False)
-    
-
-        
     def szukaj(self):
-        # selekcja atrybut贸w na podstawie zaznaczonych warto艣ci
+        # selekcja atrybut體 na podstawie zaznaczonych warto渃i
         self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
         warstwa = self.iface.mapCanvas().currentLayer()
         
-        #warto艣ci z coboBox贸w do zmiennej
+        #warto渃i z coboBox體 do zmiennej
         varObreb = unicode(self.dlg.obrebComboBox.currentText())
         varNumer = unicode(self.dlg.dzialkaComboBox.currentText())
         varArkusz = unicode(self.dlg.arkuszComboBox.currentText())
@@ -217,7 +197,7 @@ class mpzp:
         it = warstwa.getFeatures( QgsFeatureRequest( expr ) )
         ids = [i.id() for i in it]
         warstwa.setSelectedFeatures( ids )
-        self.idAtlas = int(ids[0])
+        #self.idAtlas = int(ids[0])
         
         
         #for feature in warstwa.selectedFeatures():
@@ -228,7 +208,7 @@ class mpzp:
         
         #self.iface.messageBar().pushMessage('Sukces', self.nrUchwalyReplace, level=QgsMessageBar.SUCCESS, duration=5)
         
-        #zoom do wybranej dzia艂ki
+        #zoom do wybranej dzia砶i
         box = warstwa.boundingBoxOfSelected()
         self.iface.mapCanvas().setExtent(box)
         self.iface.mapCanvas().refresh()
@@ -236,11 +216,11 @@ class mpzp:
 
         
     #def szukajDate(self):
-        # selekcja atrybut贸w na podstawie zaznaczonych warto艣ci
+        # selekcja atrybut體 na podstawie zaznaczonych warto渃i
     #    self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
     #    self.warstwa = self.iface.mapCanvas().currentLayer()
         
-        #warto艣ci z coboBox贸w do zmiennej
+        #warto渃i z coboBox體 do zmiennej
     #    varObreb_2 = self.dlg.obrebComboBox_2.currentText()
     #    varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
     #    varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
@@ -252,13 +232,11 @@ class mpzp:
     #    self.warstwa.setSelectedFeatures( ids )
 
         
-        #zoom do wybranej dzia艂ki
+        #zoom do wybranej dzia砶i
     #    box = self.warstwa.boundingBoxOfSelected()
     #   self.iface.mapCanvas().setExtent(box)
     #    self.iface.mapCanvas().refresh()
-        
-        
-    
+
 
     def run(self):
         """Run method that performs all the real work"""
@@ -267,7 +245,7 @@ class mpzp:
         
         activeLyr=None
         for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
-            if lyr.name() == "Dzialki":
+            if lyr.name() == "dzialki_knurow":
                 activeLyr = lyr
                 self.iface.setActiveLayer(activeLyr)
         
@@ -290,13 +268,13 @@ class mpzp:
         #self.iface.setActiveLayer(lyr)
         warstwa = self.iface.activeLayer()
         
-        #filtr Obr臋by
+        #filtr Obr阞y
         obreb = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
         atrObreb = warstwa.dataProvider().uniqueValues( obreb )
         cbObreb = self.dlg.obrebComboBox.addItems( atrObreb )
 
         
-                #filtr Dzia艂ki
+                #filtr Dzia砶i
         dzialka = warstwa.dataProvider().fieldNameIndex( 'NUMER' ) 
         atrDzialka = warstwa.dataProvider().uniqueValues( dzialka )
         cbDzialka = self.dlg.dzialkaComboBox.addItems( atrDzialka )
@@ -306,13 +284,6 @@ class mpzp:
         arkusz = warstwa.dataProvider().fieldNameIndex( 'ARKUSZ' ) 
         atrArkusz = warstwa.dataProvider().uniqueValues( arkusz )
         cbArkusz = self.dlg.arkuszComboBox.addItems( atrArkusz )
-
-        
-                #filtr Obr臋by
-        #obreb_2 = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
-        #atrObreb_2 = warstwa.dataProvider().uniqueValues( obreb_2 )
-        #cbObreb_2 = self.dlg.obrebComboBox_2.addItems( atrObreb_2 )
-        
         
         # Run the dialog event loop
         result = self.dlg.exec_()

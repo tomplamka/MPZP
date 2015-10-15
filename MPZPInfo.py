@@ -220,11 +220,11 @@ class mpzp:
         self.idAtlas = int(ids[0])
         
         
-        for feature in warstwa.selectedFeatures():
-            uchwala = feature.attributes()
+        #for feature in warstwa.selectedFeatures():
+        #    uchwala = feature.attributes()
             
-        self.nrUchwaly = uchwala[5]
-        self.nrUchwalyReplace = self.nrUchwaly.replace("/", "_")
+        #self.nrUchwaly = uchwala[5]
+        #self.nrUchwalyReplace = self.nrUchwaly.replace("/", "_")
         
         #self.iface.messageBar().pushMessage('Sukces', self.nrUchwalyReplace, level=QgsMessageBar.SUCCESS, duration=5)
         
@@ -235,176 +235,30 @@ class mpzp:
         
 
         
-    def szukajDate(self):
+    #def szukajDate(self):
         # selekcja atrybutów na podstawie zaznaczonych wartości
-        self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
-        self.warstwa = self.iface.mapCanvas().currentLayer()
+    #    self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
+    #    self.warstwa = self.iface.mapCanvas().currentLayer()
         
         #wartości z coboBoxów do zmiennej
-        varObreb_2 = self.dlg.obrebComboBox_2.currentText()
-        varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
-        varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
+    #    varObreb_2 = self.dlg.obrebComboBox_2.currentText()
+    #    varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
+    #    varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
         
         #request = QgsFeatureRequest().setFilterExpression( "\"OBREB\"='" + varObreb + "' OR \"NUMER\"='"+ varNumer + "'  OR \"ARKUSZ\"='"+ varArkusz + "'" )
-        expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
-        it = self.warstwa.getFeatures( QgsFeatureRequest( expr ) )
-        ids = [i.id() for i in it]
-        self.warstwa.setSelectedFeatures( ids )
+    #    expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
+    #    it = self.warstwa.getFeatures( QgsFeatureRequest( expr ) )
+    #   ids = [i.id() for i in it]
+    #    self.warstwa.setSelectedFeatures( ids )
 
         
         #zoom do wybranej działki
-        box = self.warstwa.boundingBoxOfSelected()
-        self.iface.mapCanvas().setExtent(box)
-        self.iface.mapCanvas().refresh()
+    #    box = self.warstwa.boundingBoxOfSelected()
+    #   self.iface.mapCanvas().setExtent(box)
+    #    self.iface.mapCanvas().refresh()
         
         
-    def printWyrysPDF(self):
-        alayer = self.iface.activeLayer()
-        # Dodaje wszystkie warstwy do widoku mapy
-        myMapRenderer = self.iface.mapCanvas().mapRenderer()
-
-        # ładuje szablon druku
-        myComposition = QgsComposition(myMapRenderer)
-        template = 'wyrys.qpt'
-
-        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wyrys.qpt'
-        myTemplateFile = file(myFile, 'rt')
-        myTemplateContent = myTemplateFile.read()
-        myTemplateFile.close()
-
-
-        myDocument = QDomDocument()
-        myDocument.setContent(myTemplateContent)
-        myComposition.loadFromTemplate(myDocument)
-
-        # pobierz kompozycję mapy i zdefinuj skalę
-        myAtlasMap = myComposition.getComposerMapById(0)
-        
-        # Konfiguracja Atlas
-        myAtlas = myComposition.atlasComposition()#ustawia warstwÄ w atlasie
-        
-        myAtlas.setEnabled(True)
-        myAtlas.setCoverageLayer(alayer)
-        myAtlas.setHideCoverage(False)
-        myAtlas.setSingleFile(True)
-        myAtlas.setHideCoverage(False)
-        
-        myAtlasMap.setAtlasDriven(True)#mapa kontrolowana przez atlas
-        myAtlasMap.setAtlasScalingMode(QgsComposerMap.Auto)# jaka skala kontrolowana przez atlas (margin)
-        myComposition.setAtlasMode(QgsComposition.ExportAtlas)#Ustawia Atlas na Eksport do PDF
-
-        myComposition.refreshItems()   
-            # generuj atlas
-        myAtlas.beginRender()
-        
-        myAtlas.prepareForFeature( self.idAtlas )
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\atlas\pdf'
-        output_pdf = saveDir + "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
-        try:
-            myComposition.exportAsPDF(output_pdf)
-            myAtlas.endRender()
-            self.iface.messageBar().pushMessage('Sukces', u'Wyrys został wygenerowany pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
-        except:
-            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Wyrysu nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
-        
-    def printZaswiadczeniePDF(self):
-        alayer = self.iface.activeLayer()
-        # Dodaje wszystkie warstwy do widoku mapy
-        myMapRenderer = self.iface.mapCanvas().mapRenderer()
-
-        # ładuje szablon druku
-        myComposition = QgsComposition(myMapRenderer)
-        template = 'zaswiadczenie.qpt'
-
-        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie.qpt'
-        myTemplateFile = file(myFile, 'rt')
-        myTemplateContent = myTemplateFile.read()
-        myTemplateFile.close()
-
-
-        myDocument = QDomDocument()
-        myDocument.setContent(myTemplateContent)
-        myComposition.loadFromTemplate(myDocument)
-
-        # pobierz kompozycję mapy i zdefinuj skalę
-        myAtlasMap = myComposition.getComposerMapById(0)
-        
-        # Konfiguracja Atlas
-        myAtlas = myComposition.atlasComposition()#ustawia warstwę w atlasie
-        
-        myAtlas.setEnabled(True)
-        myAtlas.setCoverageLayer(alayer)
-        myAtlas.setHideCoverage(False)
-        myAtlas.setSingleFile(True)
-        myAtlas.setHideCoverage(False)
-        
-        myAtlasMap.setAtlasDriven(True)#mapa kontrolowana przez atlas
-        myAtlasMap.setAtlasScalingMode(QgsComposerMap.Auto)# jaka skala kontrolowana przez atlas (margin)
-        myComposition.setAtlasMode(QgsComposition.ExportAtlas)#Ustawia Atlas na Eksport do PDF
-
-        myComposition.refreshItems()   
-            # generuj atlas
-        myAtlas.beginRender()
-        
-        myAtlas.prepareForFeature(self.idAtlas)
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie\pdf'
-        output_pdf = saveDir + "zaswiadczenie_dz_" + str(self.idAtlas)+ "_Zas.pdf"
-        try:
-            myComposition.exportAsPDF(output_pdf)
-            myAtlas.endRender()
-            self.iface.messageBar().pushMessage('Sukces', u'Zaświadczenie zostało wygenerowane pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
-        except:
-            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Zaświadczenia nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
-        
-    def printWypisPDF(self):
-        alayer = self.iface.activeLayer()
-        # Dodaje wszystkie warstwy do widoku mapy
-        myMapRenderer = self.iface.mapCanvas().mapRenderer()
-
-        # ładuje szablon druku
-        myComposition = QgsComposition(myMapRenderer)
-        template = self.nrUchwalyReplace
-        templateSuffix = '.qpt'
-        templateDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\pliki\szablony druku\jedno\wypis'
-        myFile = os.path.join(templateDir, template + templateSuffix)
-        myTemplateFile = file(myFile, 'rt')
-        myTemplateContent = myTemplateFile.read()
-        myTemplateFile.close()
-
-
-        myDocument = QDomDocument()
-        myDocument.setContent(myTemplateContent)
-        myComposition.loadFromTemplate(myDocument)
-
-        # pobierz kompozycję mapy i zdefinuj skalę
-        myAtlasMap = myComposition.getComposerMapById(0)
-        
-        # Konfiguracja Atlas
-        myAtlas = myComposition.atlasComposition()#ustawia warstwę w atlasie
-        
-        myAtlas.setEnabled(True)
-        myAtlas.setCoverageLayer(alayer)
-        myAtlas.setHideCoverage(False)
-        myAtlas.setSingleFile(True)
-        myAtlas.setHideCoverage(False)
-        
-        myAtlasMap.setAtlasDriven(True)#mapa kontrolowana przez atlas
-        myAtlasMap.setAtlasScalingMode(QgsComposerMap.Auto)# jaka skala kontrolowana przez atlas (margin)
-        myComposition.setAtlasMode(QgsComposition.ExportAtlas)#Ustawia Atlas na Eksport do PDF
-
-        myComposition.refreshItems()   
-            # generuj atlas
-        myAtlas.beginRender()
-        
-        myAtlas.prepareForFeature(self.idAtlas)
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\wydruki\wypisy\pdf'
-        output_pdf = saveDir + "wypis_dz_" + str(self.idAtlas)+ "_Wypis.pdf"
-        try:
-            myComposition.exportAsPDF(output_pdf)
-            myAtlas.endRender()
-            self.iface.messageBar().pushMessage('Sukces', u'Wypis został wygenerowany pomyślnie', level=QgsMessageBar.SUCCESS, duration=5)
-        except:
-            self.iface.messageBar().pushMessage(u'Błąd', u'Generowanie Wypisu nie powiodło sie', level=QgsMessageBar.CRITICAL, duration=5)
+    
 
     def run(self):
         """Run method that performs all the real work"""
@@ -413,14 +267,14 @@ class mpzp:
         
         activeLyr=None
         for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
-            if lyr.name() == "dzialki_gm_knurow_Rejestr_MPZP":
+            if lyr.name() == "Dzialki":
                 activeLyr = lyr
                 self.iface.setActiveLayer(activeLyr)
         
-        self.dlg.btnGenerujPDF.clicked.connect(self.printWyrysPDF)
-        self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
-        self.dlg.btnWypisPDF.clicked.connect(self.printWypisPDF)
-        self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)
+        #self.dlg.btnGenerujPDF.clicked.connect(self.printWyrysPDF)
+        #self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
+        #self.dlg.btnWypisPDF.clicked.connect(self.printWypisPDF)
+        #self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)
         self.dlg.btnSzukaj.clicked.connect(self.szukaj)
         
         self.dlg.obrebComboBox.clear()
@@ -455,9 +309,9 @@ class mpzp:
 
         
                 #filtr Obręby
-        obreb_2 = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
-        atrObreb_2 = warstwa.dataProvider().uniqueValues( obreb_2 )
-        cbObreb_2 = self.dlg.obrebComboBox_2.addItems( atrObreb_2 )
+        #obreb_2 = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
+        #atrObreb_2 = warstwa.dataProvider().uniqueValues( obreb_2 )
+        #cbObreb_2 = self.dlg.obrebComboBox_2.addItems( atrObreb_2 )
         
         
         # Run the dialog event loop

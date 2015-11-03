@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- mpzp
+ mpzpDialog
                                  A QGIS plugin
  MPZPInfo
                              -------------------
         begin                : 2015-09-13
+        git sha              : $Format:%H$
         copyright            : (C) 2015 by Tomasz Hak
         email                : tomplamka@gmail.com
-        git sha              : $Format:%H$
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,17 +19,23 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- This script initializes the plugin, making it known to QGIS.
 """
 
+import os
 
-# noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
-    """Load mpzp class from file mpzp.
+from PyQt4 import QtGui, uic
 
-    :param iface: A QGIS interface instance.
-    :type iface: QgsInterface
-    """
-    #
-    from .MPZPInfo import mpzp
-    return mpzp(iface)
+FORM_CLASS, _ = uic.loadUiType(os.path.join(
+    os.path.dirname(__file__), 'MPZPInfo_dialog_base.ui'))
+
+
+class mpzpDialog(QtGui.QDialog, FORM_CLASS):
+    def __init__(self, parent=None):
+        """Constructor."""
+        super(mpzpDialog, self).__init__(parent)
+        # Set up the user interface from Designer.
+        # After setupUI you can access any designer object by doing
+        # self.<objectname>, and you can use autoconnect slots - see
+        # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
+        # #widgets-and-dialogs-with-auto-connect
+        self.setupUi(self)

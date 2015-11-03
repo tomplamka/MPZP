@@ -9,7 +9,7 @@
 """
 
 __author__ = 'tomplamka@gmail.com'
-__date__ = '2015-10-15'
+__date__ = '2015-09-13'
 __copyright__ = 'Copyright 2015, Tomasz Hak'
 
 import unittest
@@ -18,7 +18,7 @@ from PyQt4.QtGui import QIcon
 
 
 
-class DzialkiDialogTest(unittest.TestCase):
+class mpzpDialogTest(unittest.TestCase):
     """Test rerources work."""
 
     def setUp(self):
@@ -31,12 +31,12 @@ class DzialkiDialogTest(unittest.TestCase):
 
     def test_icon_png(self):
         """Test we can click OK."""
-        path = ':/plugins/Dzialki/icon.png'
+        path = ':/plugins/mpzp/icon.png'
         icon = QIcon(path)
         self.assertFalse(icon.isNull())
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(DzialkiResourcesTest)
+    suite = unittest.makeSuite(mpzpResourcesTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 

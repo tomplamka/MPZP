@@ -7,14 +7,14 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Dzialki
+name=MPZPInfo
 qgisMinimumVersion=2.0
-description=Dzialki
+description=MPZPInfo
 version=0.1
 author=Tomasz Hak
 email=tomplamka@gmail.com
 
-about=Wyszukiwarka działek
+about=MPZPInfo Informacje nt. MPZP
 
 tracker=https://github.com/tomplamka/MPZP
 repository=https://github.com/tomplamka/MPZP
@@ -28,7 +28,7 @@ repository=https://github.com/tomplamka/MPZP
 # Tags are comma separated with spaces allowed
 tags=
 
-homepage=https://github.com/tomplamka/MPZP
+homepage=
 category=Plugins
 icon=icon.png
 # experimental flag

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/Dzialki" >
-        <file>icon.png</file>
+    <qresource prefix="/plugins/mpzp" >
+        <file>icon/search.png</file>
     </qresource>
 </RCC>

@@ -1,9 +1,9 @@
 #/***************************************************************************
-# Dzialki
+# mpzp
 #
-# Dzialki
+# MPZPInfo
 #							 -------------------
-#		begin				: 2015-10-15
+#		begin				: 2015-09-13
 #		git sha				: $Format:%H$
 #		copyright			: (C) 2015 by Tomasz Hak
 #		email				: tomplamka@gmail.com
@@ -38,15 +38,15 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	Dzialki.py Dzialki_dialog.py
+	MPZPInfo.py MPZPInfo_dialog.py
 
-PLUGINNAME = Dzialki
+PLUGINNAME = mpzp
 
 PY_FILES = \
 	__init__.py \
-	Dzialki.py Dzialki_dialog.py
+	MPZPInfo.py MPZPInfo_dialog.py
 
-UI_FILES = Dzialki_dialog_base.ui
+UI_FILES = MPZPInfo_dialog_base.ui
 
 EXTRAS = metadata.txt icon.png
 

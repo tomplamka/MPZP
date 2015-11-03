@@ -25,6 +25,12 @@ from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 from datetime import *
+import getpass
+import psycopg2
+from datetime import *
+import sys
+import os
+import pdb
 from PyQt4.QtXml import QDomDocument
 # Initialize Qt resources from file resources.py
 import resources
@@ -208,54 +214,51 @@ class mpzp:
         warstwa = self.iface.mapCanvas().currentLayer()
         
         #wartości z coboBoxów do zmiennej
-        varObreb = unicode(self.dlg.obrebComboBox.currentText())
-        varNumer = unicode(self.dlg.dzialkaComboBox.currentText())
-        varArkusz = unicode(self.dlg.arkuszComboBox.currentText())
+        #varObreb = unicode(self.dlg.obrebComboBox.currentText())
+        #varNumer = unicode(self.dlg.dzialkaComboBox.currentText())
+        #varArkusz = unicode(self.dlg.arkuszComboBox.currentText())
+        varSygnatura = unicode(self.dlg.sygnaturaLineEdit.text())
         
         #request = QgsFeatureRequest().setFilterExpression( "\"OBREB\"='" + varObreb + "' OR \"NUMER\"='"+ varNumer + "'  OR \"ARKUSZ\"='"+ varArkusz + "'" )
-        expr = QgsExpression( "\"OBREB\"='" + varObreb + "' AND \"NUMER\"='"+ varNumer + "'  AND \"ARKUSZ\"='"+ varArkusz + "'" )
-        it = warstwa.getFeatures( QgsFeatureRequest( expr ) )
-        ids = [i.id() for i in it]
-        warstwa.setSelectedFeatures( ids )
-        self.idAtlas = int(ids[0])
-        
-        
-        for feature in warstwa.selectedFeatures():
-            uchwala = feature.attributes()
-            
-        self.nrUchwaly = uchwala[5]
-        self.nrUchwalyReplace = self.nrUchwaly.replace("/", "_")
+        expr = QgsExpression( "\"SYGNATURA\"='" + varSygnatura + "'" )
+        features = warstwa.getFeatures( QgsFeatureRequest( expr ) ).next()
+        features.id()
+
+        self.szablon = features.attributes()[11]
+        self.sygnatura = features.attributes()[7]
+        self.idAtlas = int(features.id())
+        #self.nrUchwalyReplace = self.nrUchwaly.replace("/", "_")
         
         #self.iface.messageBar().pushMessage('Sukces', self.nrUchwalyReplace, level=QgsMessageBar.SUCCESS, duration=5)
         
         #zoom do wybranej działki
-        box = warstwa.boundingBoxOfSelected()
-        self.iface.mapCanvas().setExtent(box)
-        self.iface.mapCanvas().refresh()
+        #box = warstwa.boundingBoxOfSelected()
+        #self.iface.mapCanvas().setExtent(box)
+        #self.iface.mapCanvas().refresh()
         
 
         
-    def szukajDate(self):
+    #def szukajDate(self):
         # selekcja atrybutów na podstawie zaznaczonych wartości
-        self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
-        self.warstwa = self.iface.mapCanvas().currentLayer()
+        #self.iface.mapCanvas().setSelectionColor( QColor("yellow") )
+        #self.warstwa = self.iface.mapCanvas().currentLayer()
         
         #wartości z coboBoxów do zmiennej
-        varObreb_2 = self.dlg.obrebComboBox_2.currentText()
-        varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
-        varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
+        #varObreb_2 = self.dlg.obrebComboBox_2.currentText()
+        #varOdDate = self.dlg.odDateEdit.date().toString("yyyy.mm.dd")
+        #varDoDate = self.dlg.doDateEdit.date().toString("yyy.mm.dd")
         
         #request = QgsFeatureRequest().setFilterExpression( "\"OBREB\"='" + varObreb + "' OR \"NUMER\"='"+ varNumer + "'  OR \"ARKUSZ\"='"+ varArkusz + "'" )
-        expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
-        it = self.warstwa.getFeatures( QgsFeatureRequest( expr ) )
-        ids = [i.id() for i in it]
-        self.warstwa.setSelectedFeatures( ids )
+        #expr = QgsExpression( "\"OBREB\"='" + varObreb_2 + "' AND \"OD\">='"+ varOdDate + "'  AND \"DO\"<='"+ varDoDate + "'" )
+        #it = self.warstwa.getFeatures( QgsFeatureRequest( expr ) )
+        #ids = [i.id() for i in it]
+        #self.warstwa.setSelectedFeatures( ids )
 
         
         #zoom do wybranej działki
-        box = self.warstwa.boundingBoxOfSelected()
-        self.iface.mapCanvas().setExtent(box)
-        self.iface.mapCanvas().refresh()
+        #box = self.warstwa.boundingBoxOfSelected()
+        #self.iface.mapCanvas().setExtent(box)
+        #self.iface.mapCanvas().refresh()
         
         
     def printWyrysPDF(self):
@@ -265,9 +268,14 @@ class mpzp:
 
         # ładuje szablon druku
         myComposition = QgsComposition(myMapRenderer)
-        template = 'wyrys.qpt'
+        username = getpass.getuser()
+        username = str(username)
+        templateDir = r'C:\Users'
+        endDir = r'\Desktop\Knurow_mpzp\pliki\szablony_druku\jedno\wyrys\wyrys'
+        template = self.szablon
+        qpt = '.qpt'
 
-        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\wyrys.qpt'
+        myFile = os.path.join(templateDir, username + endDir + template + qpt)
         myTemplateFile = file(myFile, 'rt')
         myTemplateContent = myTemplateFile.read()
         myTemplateFile.close()
@@ -298,8 +306,11 @@ class mpzp:
         myAtlas.beginRender()
         
         myAtlas.prepareForFeature( self.idAtlas )
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\atlas\pdf'
-        output_pdf = saveDir + "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
+        saveDirEnd = '\Desktop\Knurow_mpzp\wydruki\wyrysy'
+        outputDir = os.path.join(templateDir, username + saveDirEnd)
+        output_pdf = outputDir + "\Wyrys_" + self.sygnatura + ".pdf"
+        #saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\atlas\pdf'
+        #output_pdf = saveDir + "wyrys_dz_" + str(self.idAtlas)+ "_MPZP_plan.pdf"
         try:
             myComposition.exportAsPDF(output_pdf)
             myAtlas.endRender()
@@ -316,7 +327,7 @@ class mpzp:
         myComposition = QgsComposition(myMapRenderer)
         template = 'zaswiadczenie.qpt'
 
-        myFile = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie.qpt'
+        myFile = r'\Desktop\Knurow_mpzp\pliki\szablony_druku\jedno\wyrys\wyrys'
         myTemplateFile = file(myFile, 'rt')
         myTemplateContent = myTemplateFile.read()
         myTemplateFile.close()
@@ -347,7 +358,7 @@ class mpzp:
         myAtlas.beginRender()
         
         myAtlas.prepareForFeature(self.idAtlas)
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\druk\zaswiadczenie\pdf'
+        saveDir = r'\Desktop\Knurow_mpzp\wydruki\zaswiadczenia'
         output_pdf = saveDir + "zaswiadczenie_dz_" + str(self.idAtlas)+ "_Zas.pdf"
         try:
             myComposition.exportAsPDF(output_pdf)
@@ -363,10 +374,14 @@ class mpzp:
 
         # ładuje szablon druku
         myComposition = QgsComposition(myMapRenderer)
-        template = self.nrUchwalyReplace
-        templateSuffix = '.qpt'
-        templateDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\pliki\szablony druku\jedno\wypis'
-        myFile = os.path.join(templateDir, template + templateSuffix)
+        username = getpass.getuser()
+        username = str(username)
+        templateDir = r'C:\Users'
+        endDir = r'\Desktop\Knurow_mpzp\pliki\szablony_druku\jedno\wypis\wypis'
+        template = self.szablon
+        qpt = '.qpt'
+
+        myFile = os.path.join(templateDir, username + endDir + template + qpt)
         myTemplateFile = file(myFile, 'rt')
         myTemplateContent = myTemplateFile.read()
         myTemplateFile.close()
@@ -397,8 +412,9 @@ class mpzp:
         myAtlas.beginRender()
         
         myAtlas.prepareForFeature(self.idAtlas)
-        saveDir = r'C:\Users\haku\Desktop\Opole\Knurow\Knurow\wydruki\wypisy\pdf'
-        output_pdf = saveDir + "wypis_dz_" + str(self.idAtlas)+ "_Wypis.pdf"
+        saveDirEnd = '\Desktop\Knurow_mpzp\wydruki\wypisy'
+        outputDir = os.path.join(templateDir, username + saveDirEnd)
+        output_pdf = outputDir + "\Wypis_" + self.sygnatura + ".pdf"
         try:
             myComposition.exportAsPDF(output_pdf)
             myAtlas.endRender()
@@ -413,19 +429,21 @@ class mpzp:
         
         activeLyr=None
         for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
-            if lyr.name() == "dzialki_gm_knurow_Rejestr_MPZP":
+            if lyr.name() == "Rejestr_wnioskow":
                 activeLyr = lyr
                 self.iface.setActiveLayer(activeLyr)
         
         self.dlg.btnGenerujPDF.clicked.connect(self.printWyrysPDF)
-        self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
+        #self.dlg.btnZaswiadczeniePDF.clicked.connect(self.printZaswiadczeniePDF)
         self.dlg.btnWypisPDF.clicked.connect(self.printWypisPDF)
-        self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)
+        #self.dlg.btnSzukajTab2.clicked.connect(self.szukajDate)
         self.dlg.btnSzukaj.clicked.connect(self.szukaj)
         
-        self.dlg.obrebComboBox.clear()
-        self.dlg.dzialkaComboBox.clear()
-        self.dlg.arkuszComboBox.clear()
+        self.dlg.sygnaturaLineEdit.clear()
+        
+        #self.dlg.obrebComboBox.clear()
+        #self.dlg.dzialkaComboBox.clear()
+        #self.dlg.arkuszComboBox.clear()
         
         #tabelka
         #self.dlg.ui.tableView.setModel(self.dzemodel)
@@ -437,27 +455,27 @@ class mpzp:
         warstwa = self.iface.activeLayer()
         
         #filtr Obręby
-        obreb = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
-        atrObreb = warstwa.dataProvider().uniqueValues( obreb )
-        cbObreb = self.dlg.obrebComboBox.addItems( atrObreb )
+        #obreb = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
+        #atrObreb = warstwa.dataProvider().uniqueValues( obreb )
+        #cbObreb = self.dlg.obrebComboBox.addItems( atrObreb )
 
         
                 #filtr Działki
-        dzialka = warstwa.dataProvider().fieldNameIndex( 'NUMER' ) 
-        atrDzialka = warstwa.dataProvider().uniqueValues( dzialka )
-        cbDzialka = self.dlg.dzialkaComboBox.addItems( atrDzialka )
+        #dzialka = warstwa.dataProvider().fieldNameIndex( 'NUMER' ) 
+        #atrDzialka = warstwa.dataProvider().uniqueValues( dzialka )
+        #cbDzialka = self.dlg.dzialkaComboBox.addItems( atrDzialka )
 
         
                 #filtr Arkusze
-        arkusz = warstwa.dataProvider().fieldNameIndex( 'ARKUSZ' ) 
-        atrArkusz = warstwa.dataProvider().uniqueValues( arkusz )
-        cbArkusz = self.dlg.arkuszComboBox.addItems( atrArkusz )
+        #arkusz = warstwa.dataProvider().fieldNameIndex( 'ARKUSZ' ) 
+        #atrArkusz = warstwa.dataProvider().uniqueValues( arkusz )
+        #cbArkusz = self.dlg.arkuszComboBox.addItems( atrArkusz )
 
         
                 #filtr Obręby
-        obreb_2 = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
-        atrObreb_2 = warstwa.dataProvider().uniqueValues( obreb_2 )
-        cbObreb_2 = self.dlg.obrebComboBox_2.addItems( atrObreb_2 )
+        #obreb_2 = warstwa.dataProvider().fieldNameIndex( 'OBREB' ) 
+        #atrObreb_2 = warstwa.dataProvider().uniqueValues( obreb_2 )
+        #cbObreb_2 = self.dlg.obrebComboBox_2.addItems( atrObreb_2 )
         
         
         # Run the dialog event loop

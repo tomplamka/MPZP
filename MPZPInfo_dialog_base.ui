@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>608</height>
+    <width>346</width>
+    <height>182</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,211 +18,73 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>391</width>
-     <height>581</height>
+     <width>321</width>
+     <height>161</height>
     </rect>
    </property>
    <property name="title">
     <string>Wyszukaj</string>
    </property>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>371</width>
-      <height>551</height>
+      <x>20</x>
+      <y>100</y>
+      <width>241</width>
+      <height>25</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Dla działki</string>
-     </attribute>
-     <widget class="QWidget" name="formLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>241</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="obrebLabel">
-         <property name="text">
-          <string>Obręb</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="obrebComboBox"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="dzialkaLabel">
-         <property name="text">
-          <string>Działka</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="dzialkaComboBox">
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="arkuszLabel">
-         <property name="text">
-          <string>Arkusz</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="arkuszComboBox">
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QPushButton" name="btnSzukaj">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>10</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Szukaj</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../../../../../.designer/backup/icon/search.png</normaloff>../../../../../../.designer/backup/icon/search.png</iconset>
-      </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>180</y>
-        <width>241</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="btnWypisPDF">
-         <property name="text">
-          <string>Wypis</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnGenerujPDF">
-         <property name="text">
-          <string>Wyrys</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnZaswiadczeniePDF">
-         <property name="text">
-          <string>Zaświadczenie</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>220</y>
-        <width>341</width>
-        <height>291</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Według daty</string>
-     </attribute>
-     <widget class="QWidget" name="formLayoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>231</width>
-        <height>74</height>
-       </rect>
-      </property>
-      <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btnWypisPDF">
+       <property name="text">
+        <string>Wypis</string>
        </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="obrebLabel_2">
-         <property name="text">
-          <string>Obręb</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="obrebComboBox_2"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="odLabel">
-         <property name="text">
-          <string>Od</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QDateEdit" name="odDateEdit">
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="doLabel">
-         <property name="text">
-          <string>Do</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QDateEdit" name="doDateEdit">
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QPushButton" name="btnSzukajTab2">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Szukaj</string>
-      </property>
-     </widget>
-    </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnGenerujPDF">
+       <property name="text">
+        <string>Wyrys</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="sygnaturaLabel">
+       <property name="text">
+        <string>Sygnatura</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="sygnaturaLineEdit"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="btnSzukaj">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>30</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Szukaj</string>
+    </property>
    </widget>
   </widget>
  </widget>
